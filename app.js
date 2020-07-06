@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const dataRouter = require("./controllers/dataRoute");
 const uploadRouter = require("./controllers/uploadRoute");
+const imageRouter = require("./controllers/imageRoute");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
@@ -35,6 +36,7 @@ app.use(
 
 app.use("/api/data", dataRouter);
 app.use("/api/upload", uploadRouter);
+app.use("/api", imageRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
