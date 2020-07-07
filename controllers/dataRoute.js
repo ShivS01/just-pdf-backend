@@ -4,13 +4,13 @@ const path = require("path");
 
 //fetches all data
 
-const baserUrl = "https://just-pdf.herokuapp.com/";
+// const baserUrl = "https://just-pdf.herokuapp.com/";
 
 dataRouter.get("/", (request, response) => {
   Data.find({}).then((data) =>
     response.json(
       data.map((dat) => {
-        dat.logo = path.join(baserUrl, dat.logo);
+        // dat.logo = path.join(baserUrl, dat.logo);
         return dat.toJSON();
       })
     )
