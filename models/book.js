@@ -1,23 +1,6 @@
 const mongoose = require("mongoose");
-mongoose.set("useFindAndModify", false);
-const url = process.env.MONGODB_URI;
-
-console.log("connecting to", url);
-
-mongoose
-  .connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then((result) => {
-    console.log("connected to MongoDB");
-  })
-  .catch((error) => {
-    console.log("error connecting to MongoDB:", error.message);
-  });
 
 const bookSchema = new mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-  },
   title: {
     type: String,
     required: true,
@@ -26,21 +9,38 @@ const bookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+    required: false,
+  },
+  description: {
+    type: String,
+    required: false,
+  },
   pages: {
     type: String,
     required: false,
   },
-
-  //   content: {
-  //     type: String,
-  //     minlength: 5,
-  //     required: true,
-  //   },
-  //   date: {
-  //     type: Date,
-  //     required: true,
-  //   },
-  //   important: Boolean,
+  size: {
+    type: String,
+    required: false,
+  },
+  download: {
+    type: String,
+    required: false,
+  },
+  flipkart: {
+    type: String,
+    required: false,
+  },
+  amazon: {
+    type: String,
+    required: false,
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
 });
 
 bookSchema.set("toJSON", {
@@ -51,19 +51,4 @@ bookSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("Note", bookSchema);
-
-// const book = [
-//     {
-//       id: 1,
-//       name: "Atomic Habits",
-//       author: "James Clear",
-//       pages: "300",
-//       edition: "3",
-//       img: "xyz.png",
-//       size: "30MB",
-//       download: "http://download.org",
-//       flipkart: "http://flipkart.org",
-//       amazon: "http://amazon.org",
-//     },
-//   ];
+module.exports = mongoose.model("Book", bookSchema);
