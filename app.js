@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const dataRouter = require("./controllers/dataRoute");
 const uploadRouter = require("./controllers/uploadRoute");
-const imageRouter = require("./controllers/imageRoute");
+// const imageRouter = require("./controllers/imageRoute");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
@@ -34,9 +34,10 @@ app.use(
   morgan(":method :url :status :res[content-length] - :response-time ms :data")
 );
 
+app.use(express.static(__dirname + "/public"));
 app.use("/api/data", dataRouter);
 app.use("/api/upload", uploadRouter);
-app.use("/api", imageRouter);
+// app.use("/api", imageRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
