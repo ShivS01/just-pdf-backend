@@ -4,7 +4,7 @@ const path = require("path");
 
 //fetches all data
 
-const baserUrl = "just-pdf.herokuapp.com/";
+const baserUrl = "https://just-pdf.herokuapp.com/";
 
 dataRouter.get("/", (request, response) => {
   Data.find({}).then((data) =>
