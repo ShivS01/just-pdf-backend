@@ -2,7 +2,7 @@ const imageRouter = require("express").Router();
 
 imageRouter.get("/:logo", (req, res) => {
   var options = {
-    root: "./public/assets/images/",
+    root: "./public/",
     dotfiles: "deny",
     headers: {
       "x-timestamp": Date.now(),
