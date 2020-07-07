@@ -1,10 +1,20 @@
 const dataRouter = require("express").Router();
 const Data = require("../models/data");
+const path = require("path");
 
 //fetches all data
 
+const baserUrl = "just-pdf.herokuapp.com/";
+
 dataRouter.get("/", (request, response) => {
-  Data.find({}).then((data) => response.json(data.map((dat) => dat.toJSON())));
+  Data.find({}).then((data) =>
+    response.json(
+      data.map((dat) => {
+        dat.logo = path.join(baserUrl, dat.logo);
+        return dat.toJSON();
+      })
+    )
+  );
 });
 
 //fetches data by id
