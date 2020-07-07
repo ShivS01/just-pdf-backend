@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 var Schema = mongoose.Schema;
 
@@ -12,8 +13,8 @@ const branchSchema = new mongoose.Schema({
     required: true,
   },
   date: {
-    type: Date,
-    required: true,
+    type: String,
+    default: moment().format("MMMM Do YYYY, h:mm:ss a"),
   },
   semesters: [
     {

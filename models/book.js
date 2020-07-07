@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const bookSchema = new mongoose.Schema({
   title: {
@@ -38,8 +39,8 @@ const bookSchema = new mongoose.Schema({
     required: false,
   },
   date: {
-    type: Date,
-    required: true,
+    type: String,
+    default: moment().format("MMMM Do YYYY, h:mm:ss a"),
   },
 });
 

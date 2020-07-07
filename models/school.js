@@ -1,13 +1,9 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 var Schema = mongoose.Schema;
 
 const schoolSchema = new mongoose.Schema({
-  //   university: {
-  //     type: String,
-  //     minlength: 5,
-  //     required: true,
-  //   },
   name: {
     type: String,
     required: true,
@@ -17,8 +13,8 @@ const schoolSchema = new mongoose.Schema({
     required: false,
   },
   date: {
-    type: Date,
-    required: true,
+    type: String,
+    default: moment().format("MMMM Do YYYY, h:mm:ss a"),
   },
   branch: [
     {

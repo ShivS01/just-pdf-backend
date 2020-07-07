@@ -10,6 +10,8 @@ const logger = require("./utils/logger");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
+mongoose.set("useFindAndModify", false);
+
 logger.info("connecting to", config.MONGODB_URI);
 
 mongoose

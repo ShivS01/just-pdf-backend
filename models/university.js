@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 var Schema = mongoose.Schema;
 
@@ -7,14 +8,15 @@ const univSchema = new mongoose.Schema({
     type: String,
     minlength: 5,
     required: true,
+    unique: true,
   },
   logo: {
     type: String,
     required: true,
   },
   date: {
-    type: Date,
-    required: true,
+    type: String,
+    default: moment().format("MMMM Do YYYY, h:mm:ss a"),
   },
   school: [
     {

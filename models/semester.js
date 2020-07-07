@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 var Schema = mongoose.Schema;
 
@@ -15,8 +16,8 @@ const semesterScheme = new mongoose.Schema({
     },
   ],
   date: {
-    type: Date,
-    required: true,
+    type: String,
+    default: moment().format("MMMM Do YYYY, h:mm:ss a"),
   },
 });
 
