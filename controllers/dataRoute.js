@@ -18,7 +18,7 @@ dataRouter.get("/", (request, response) => {
   );
 });
 
-dataRouter.get("/univ", (request, response) => {
+dataRouter.get("/all", (request, response) => {
   db.University.find({})
     .populate("school")
     .then((data) => {
@@ -26,9 +26,11 @@ dataRouter.get("/univ", (request, response) => {
     });
 });
 
-dataRouter.get("/school", (request, response) => {
-  db.School.find({}).then((data) =>
-    response.json(data.map((dat) => dat.toJSON()))
+dataRouter.get("/:univ", (request, response) => {
+  // db.University.find({ university: request.params.univ }).then(
+  db.School.find({}).then(
+    (data) => response.json(data.map((dat) => dat.toJSON()))
+    // )
   );
 });
 

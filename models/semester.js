@@ -3,15 +3,15 @@ const moment = require("moment");
 
 var Schema = mongoose.Schema;
 
-const semesterScheme = new mongoose.Schema({
+const semesterSchema = new mongoose.Schema({
   semester: {
     type: Number,
     required: true,
   },
-  books: [
+  subject: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Book",
+      ref: "Subject",
       required: true,
     },
   ],
@@ -21,7 +21,7 @@ const semesterScheme = new mongoose.Schema({
   },
 });
 
-semesterScheme.set("toJSON", {
+semesterSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -29,7 +29,7 @@ semesterScheme.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("Semester", semesterScheme);
+module.exports = mongoose.model("Semester", semesterSchema);
 
 // const semesters = [
 //     {

@@ -41,7 +41,7 @@ uploadRouter.post("/:univ", (request, response, next) => {
   db.School.create(request.body)
     .then((dbSchool) =>
       db.University.findOneAndUpdate(
-        { university: request.params.univ },
+        { abbv: request.params.univ },
         { $push: { school: dbSchool._id } },
         { new: true }
       )
@@ -56,7 +56,7 @@ uploadRouter.post("/:univ/:school", (request, response, next) => {
   db.Branch.create(request.body)
     .then((dbBranch) =>
       db.School.findOneAndUpdate(
-        { abbrevation: request.params.school },
+        { abbv: request.params.school },
         { $push: { branch: dbBranch._id } },
         { new: true }
       )
@@ -71,8 +71,8 @@ uploadRouter.post("/:univ/:school/:branch", (request, response, next) => {
   db.Semester.create(request.body)
     .then((dbSemester) =>
       db.Branch.findOneAndUpdate(
-        { name: request.params.branch },
-        { $push: { semester: dbSemester._id } },
+        { abbv: request.params.branch },
+        { $push: { semesters: dbSemester._id } },
         { new: true }
       )
     )
@@ -80,9 +80,27 @@ uploadRouter.post("/:univ/:school/:branch", (request, response, next) => {
     .catch((err) => next(err));
 });
 
-// Links a Book by title to the Semester
+//Creates a Subject and links to respective Semester
 
-uploadRouter.post("/:univ/:school/:branch/:book", (request, response, next) => {
+uploadRouter.post("/:univ/:school/:branch/:sem", (request, response, next) => {
+  db.Subject.create(request.body).then((dbSubject) => {
+    db.Semester.findOneAndUpdate(
+      { semester: request.params.sem },
+      { $push: { subject: dbSubject._id } },
+      { new: true }
+    )
+      .then((dbSemester) => response.json(dbSemester))
+      .catch((err) => next(err));
+  });
+});
+
+// uploadRouter.post("/:univ/:school/:branch/:sem", (request, response, next) => {
+//   db.Semester.create;
+// });
+
+//THIS NEED ATTENTION
+
+uploadRouter.post("/:univ/:school/:branch/:sem", (request, response, next) => {
   db.Book.findOne({ title: request.params.id })
     .then((dbBook) =>
       db.Semester.findOneAndUpdate(
@@ -97,6 +115,8 @@ uploadRouter.post("/:univ/:school/:branch/:book", (request, response, next) => {
 
 //To upload a book
 
-uploadRouter.post("/book", (request, response, next) => {});
+uploadRouter.post("/book", (request, response, next) => {
+  db.Book.create(request.body).then((dbBook) => response.json(dbBook));
+});
 
 module.exports = uploadRouter;

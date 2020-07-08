@@ -8,9 +8,9 @@ const schoolSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  abbrevation: {
+  abbv: {
     type: String,
-    required: false,
+    required: true,
   },
   date: {
     type: String,

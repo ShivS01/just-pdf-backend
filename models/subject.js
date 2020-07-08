@@ -3,35 +3,29 @@ const moment = require("moment");
 
 var Schema = mongoose.Schema;
 
-const univSchema = new mongoose.Schema({
-  university: {
+const subjectSchema = new mongoose.Schema({
+  name: {
     type: String,
     required: true,
-    unique: true,
   },
   abbv: {
     type: String,
     required: true,
-    unique: true,
   },
-  logo: {
-    type: String,
-    required: true,
-  },
+  books: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Book",
+      required: true,
+    },
+  ],
   date: {
     type: String,
     default: moment().format("MMMM Do YYYY, h:mm:ss a"),
   },
-  school: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "School",
-      required: true,
-    },
-  ],
 });
 
-univSchema.set("toJSON", {
+subjectSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -39,4 +33,4 @@ univSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("University", univSchema);
+module.exports = mongoose.model("Subject", subjectSchema);

@@ -8,6 +8,10 @@ const branchSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  abbv: {
+    type: String,
+    required: true,
+  },
   duration: {
     type: Number,
     required: true,
@@ -19,7 +23,7 @@ const branchSchema = new mongoose.Schema({
   semesters: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Semesters",
+      ref: "Semester",
       required: true,
     },
   ],
