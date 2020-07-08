@@ -32,7 +32,7 @@ uploadRouter.post("/", (request, response, next) => {
 
   db.University.create(request.body)
     .then((dbUniversity) => response.json(dbUniversity))
-    .catch((err) => response.json(err));
+    .catch((err) => next(err));
 });
 
 //Creates a School and links to respective University
@@ -47,20 +47,56 @@ uploadRouter.post("/:univ", (request, response, next) => {
       )
     )
     .then((dbUniversity) => response.json(dbUniversity))
-    .catch((err) => response.json(err));
+    .catch((err) => next(err));
 });
+
+// Creates a Branch and links to respective School
 
 uploadRouter.post("/:univ/:school", (request, response, next) => {
   db.Branch.create(request.body)
     .then((dbBranch) =>
       db.School.findOneAndUpdate(
-        { name: request.params.school },
-        { $push: { name: dbBranch._id } },
+        { abbrevation: request.params.school },
+        { $push: { branch: dbBranch._id } },
         { new: true }
       )
     )
     .then((dbSchool) => response.json(dbSchool))
-    .catch((err) => response.json(err));
+    .catch((err) => next(err));
 });
+
+// Creates a Semester and links to respective Branch
+
+uploadRouter.post("/:univ/:school/:branch", (request, response, next) => {
+  db.Semester.create(request.body)
+    .then((dbSemester) =>
+      db.Branch.findOneAndUpdate(
+        { name: request.params.branch },
+        { $push: { semester: dbSemester._id } },
+        { new: true }
+      )
+    )
+    .then((dbBranch) => response.json(dbBranch))
+    .catch((err) => next(err));
+});
+
+// Links a Book by title to the Semester
+
+uploadRouter.post("/:univ/:school/:branch/:book", (request, response, next) => {
+  db.Book.findOne({ title: request.params.id })
+    .then((dbBook) =>
+      db.Semester.findOneAndUpdate(
+        { books: request.params.book },
+        { $push: { branch: dbBook._id } },
+        { new: true }
+      )
+    )
+    .then((dbSemester) => response.json(dbSemester))
+    .catch((err) => next(err));
+});
+
+//To upload a book
+
+uploadRouter.post("/book", (request, response, next) => {});
 
 module.exports = uploadRouter;

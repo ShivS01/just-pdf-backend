@@ -1,6 +1,7 @@
 const dataRouter = require("express").Router();
 const Data = require("../models/data");
-const path = require("path");
+const db = require("../models/index");
+// const path = require("path");
 
 //fetches all data
 
@@ -17,18 +18,18 @@ dataRouter.get("/", (request, response) => {
   );
 });
 
-//fetches data by id
+dataRouter.get("/univ", (request, response) => {
+  db.University.find({})
+    .populate("school")
+    .then((data) => {
+      response.json(data.map((dat) => dat.toJSON()));
+    });
+});
 
-dataRouter.get("/:id", (request, response, next) => {
-  Note.findById(request.params.id)
-    .then((note) => {
-      if (note) {
-        response.json(note.toJSON());
-      } else {
-        response.status(404).end();
-      }
-    })
-    .catch((error) => next(error));
+dataRouter.get("/school", (request, response) => {
+  db.School.find({}).then((data) =>
+    response.json(data.map((dat) => dat.toJSON()))
+  );
 });
 
 module.exports = dataRouter;
