@@ -94,26 +94,37 @@ uploadRouter.post("/:univ/:school/:branch/:sem", (request, response, next) => {
   });
 });
 
-// uploadRouter.post("/:univ/:school/:branch/:sem", (request, response, next) => {
-//   db.Semester.create;
-// });
+//Routes below this point need to be updated
 
 //THIS NEED ATTENTION
 
-uploadRouter.post("/:univ/:school/:branch/:sem", (request, response, next) => {
-  db.Book.findOne({ title: request.params.id })
-    .then((dbBook) =>
-      db.Semester.findOneAndUpdate(
-        { books: request.params.book },
-        { $push: { branch: dbBook._id } },
-        { new: true }
+uploadRouter.post(
+  "/:univ/:school/:branch/:semester/:subject/:id",
+  (request, response, next) => {
+    db.Book.findById(request.params.id)
+      .then((dbBook) =>
+        //Conceptual, won't work, need research
+        db.University.findOne({ abbv: request.params.univ }, () => {
+          db.School.findOne({ abbv: request.params.school }, () => {
+            db.Branch.findOne({ abbv: request.params.branch }, () => {
+              db.Semester.findOne({ semester: request.params.semester }, () => {
+                db.Subject.findOneAndUpdate(
+                  { books: request.params.book },
+                  { $push: { branch: dbBook._id } },
+                  { new: true }
+                );
+              });
+            });
+          });
+        })
       )
-    )
-    .then((dbSemester) => response.json(dbSemester))
-    .catch((err) => next(err));
-});
+      .then((dbSemester) => response.json(dbSemester))
+      .catch((err) => next(err));
+  }
+);
 
 //To upload a book
+// Configure to add Multer package to upload images and their path
 
 uploadRouter.post("/book", (request, response, next) => {
   db.Book.create(request.body).then((dbBook) => response.json(dbBook));
