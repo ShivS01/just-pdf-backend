@@ -18,9 +18,17 @@ dataRouter.get("/", (request, response) => {
   );
 });
 
+//displays all data, not recommended for actual use, may be inefficient, only for dev purpose
+
 dataRouter.get("/all", (request, response) => {
   db.University.find({})
-    .populate("school")
+    .populate({
+      path: "school",
+      populate: {
+        path: "branch",
+        populate: { path: "semesters", populate: "subject" },
+      },
+    })
     .then((data) => {
       response.json(data.map((dat) => dat.toJSON()));
     });
