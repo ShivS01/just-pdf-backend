@@ -31,6 +31,13 @@ const univSchema = new mongoose.Schema({
   ],
 });
 
+var autoPopulateSchool = function (next) {
+  this.populate("school");
+  next();
+};
+
+univSchema.pre("findOne", autoPopulateSchool).pre("find", autoPopulateSchool);
+
 univSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();

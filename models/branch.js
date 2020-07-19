@@ -29,6 +29,15 @@ const branchSchema = new mongoose.Schema({
   ],
 });
 
+var autoPopulateSemesters = function (next) {
+  this.populate("semesters");
+  next();
+};
+
+branchSchema
+  .pre("findOne", autoPopulateSemesters)
+  .pre("find", autoPopulateSemesters);
+
 branchSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();

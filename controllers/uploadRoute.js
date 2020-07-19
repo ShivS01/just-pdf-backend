@@ -103,7 +103,7 @@ uploadRouter.post(
   (request, response, next) => {
     db.Book.findById(request.params.id)
       .then((dbBook) =>
-        //Conceptual, won't work, need research
+        //Conceptual, won't work, looks stupid
         db.University.findOne({ abbv: request.params.univ }, () => {
           db.School.findOne({ abbv: request.params.school }, () => {
             db.Branch.findOne({ abbv: request.params.branch }, () => {
@@ -118,7 +118,7 @@ uploadRouter.post(
           });
         })
       )
-      .then((dbSemester) => response.json(dbSemester))
+      .then((dbSubject) => response.json(dbSubject))
       .catch((err) => next(err));
   }
 );

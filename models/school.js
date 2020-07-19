@@ -25,6 +25,13 @@ const schoolSchema = new mongoose.Schema({
   ],
 });
 
+var autoPopulateBranch = function (next) {
+  this.populate("branch");
+  next();
+};
+
+schoolSchema.pre("findOne", autoPopulateBranch).pre("find", autoPopulateBranch);
+
 schoolSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();

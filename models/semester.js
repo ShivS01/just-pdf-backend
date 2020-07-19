@@ -21,6 +21,15 @@ const semesterSchema = new mongoose.Schema({
   },
 });
 
+var autoPopulateSubject = function (next) {
+  this.populate("subject");
+  next();
+};
+
+semesterSchema
+  .pre("findOne", autoPopulateSubject)
+  .pre("find", autoPopulateSubject);
+
 semesterSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();

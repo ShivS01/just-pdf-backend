@@ -34,12 +34,26 @@ dataRouter.get("/all", (request, response) => {
     });
 });
 
-dataRouter.get("/:univ", (request, response) => {
+dataRouter.get("/:univ", async (request, response) => {
   // db.University.find({ university: request.params.univ }).then(
-  db.School.find({}).then(
-    (data) => response.json(data.map((dat) => dat.toJSON()))
-    // )
-  );
+  // db.University.findOne({ abbv: request.params.univ })
+  //   .then()
+
+  //   .then(
+  //     (data) => response.json(data.map((dat) => dat.toJSON()))
+  //     // )
+  //   );
+
+  // const c = await getUniv();
+
+  getUniv = (univ) => {
+    db.University.findOne({ abbv: univ })
+      .then((dbUniversity) => {
+        response.json(dbUniversity.school.map((dat) => dat.toJSON()));
+      })
+      .catch((err) => console.log(err));
+  };
+  await getUniv(request.params.univ);
 });
 
 module.exports = dataRouter;
