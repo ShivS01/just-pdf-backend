@@ -34,7 +34,7 @@ dataRouter.get("/all", (request, response) => {
     });
 });
 
-dataRouter.get("/:univ", async (request, response) => {
+dataRouter.get("/:univ/:school", async (request, response) => {
   // db.University.find({ university: request.params.univ }).then(
   // db.University.findOne({ abbv: request.params.univ })
   //   .then()
@@ -47,13 +47,27 @@ dataRouter.get("/:univ", async (request, response) => {
   // const c = await getUniv();
 
   getUniv = (univ) => {
-    db.University.findOne({ abbv: univ })
+    return db.University.findOne({ abbv: univ })
       .then((dbUniversity) => {
-        response.json(dbUniversity.school.map((dat) => dat.toJSON()));
+        return dbUniversity.school.map((dat) => dat.toJSON());
       })
       .catch((err) => console.log(err));
   };
-  await getUniv(request.params.univ);
+
+  getSchool = (school, univData) => {
+    return db.School.findOne({
+      $and: [{ abbv: school }, { abbv: univData }],
+    })
+      .then((dbSchool) => {
+        return dbSchool.school.map((dat) => dat.toJSON());
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const university = await getUniv(request.params.univ);
+  // console.log(university);
+  const school = await getSchool(request.params.school, university);
+  console.log(school);
 });
 
 module.exports = dataRouter;
